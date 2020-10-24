@@ -11,3 +11,56 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.control-box {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 200px;
+}
+
+input[type=text] {
+ text-transform: uppercase;
+}
+
+.control:first-child,.control:last-child {
+  width: 100%;
+}
+
+.control:not(:first-child) {
+  flex: 1;
+}
+
+#playground {
+  display: flex;
+  justify-content: center; /* center */
+  align-items: center; /* center */
+  border: 1px solid black;
+  height: 200px;
+  width: 200px;
+}
+
+#robotX {
+  height: 20px;
+  width: 20px;
+  border-radius: 50% 50%;
+  background: red;
+}
+
+#robot:before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 15px 10px 0;
+  border-color: transparent red transparent transparent;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+#robot:after {
+  content: '';
+  border: 2px solid blue;
+}
+
