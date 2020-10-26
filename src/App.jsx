@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import Button from './Button';
+import Strings from './strings'
 import './App.css';
 
+/**
+ * App running component
+ */
 class App extends Component {
   constructor(props) {
     super(props);
@@ -19,28 +23,33 @@ class App extends Component {
     this.vert = 5;
 
     this.state = {
+      inputError: false,
       currentDirection: 'W',
       autoRunValue: ''
     };
   }
 
+  componentDidMount() {
+    this.robot = document.getElementById('robot');
+    this.currentPosition = document.getElementById('currentPosition');
+  }
+
+  /**
+   * Function for running robot based on input
+   */
   autoRun() {
     if (!this.state.autoRunValue) {
-      console.log('Check input');
+      this.setState({inputError: true})
       return;
     }
     let autoPilot = this.state.autoRunValue.toUpperCase().split('');
-    autoPilot.forEach(autoNav => this.move(autoNav));
+    autoPilot.forEach(autoNav => this.move(autoNav, this.state.autoRunValue.length));
     this.setState({autoRunValue: ''})
   }
 
-  componentDidMount() {
-    this.robot = React.createRef();
-    this.robot = document.getElementById('robot');
-    this.currentPosition = document.getElementById('currentPosition');
-    this.inputField = document.getElementById('autoRunInput').addEventListener('keypress', e => console.log(e.key));
-  }
-
+  /**
+   * Moves robot forward
+   */
   moveForward() {
     switch (this.directions[this.position]) {
       case 'W':
@@ -80,6 +89,9 @@ class App extends Component {
     this.setState({ currentDirection: this.directions[this.position] });
   }
 
+  /**
+   * Rotates robot right using css
+   */
   turnRight() {
     this.newDegree = this.currentDegree + 90;
     this.robot.style.transform = 'rotate(' + this.newDegree + 'deg)';
@@ -90,6 +102,9 @@ class App extends Component {
     return this.directions[this.position];
   }
 
+  /**
+   * Rotates robot left using css
+   */
   turnLeft() {
     this.newDegree = this.currentDegree - 90;
     this.robot.style.transform = 'rotate(' + this.newDegree + 'deg)';
@@ -102,7 +117,12 @@ class App extends Component {
     return this.directions[this.position];
   }
 
-  move(direction) {
+  /**
+   * Runs function dependent on current direction
+   * @param {string} direction Current direction robot is facing
+   * @param {number} turns amount of direction calls
+   */
+  move(direction, turns) {
     switch (direction) {
       case 'F':
         this.moveForward();
@@ -117,6 +137,9 @@ class App extends Component {
     }
   }
 
+  /**
+   * Renders UI
+   */
   render() {
     return (
       <div>
@@ -125,44 +148,48 @@ class App extends Component {
               classes="control"
               id='moveUp'
               onClick={() => this.move('F')}
-              buttonText="Forward"
+              buttonText={Strings.buttons.moveForward}
             />
             <Button
-                classes="control"
-                id='moveLeft'
-                onClick={() => this.move('L')}
-                buttonText="Turn left"
+              classes="control"
+              id='moveLeft'
+              onClick={() => this.move('L')}
+              buttonText={Strings.buttons.turnLeft}
             />
             <Button
-                classes="control"
-                id='moveUp'
-                onClick={() => this.move('R')}
-                buttonText="Turn right"
+              classes="control"
+              id='moveUp'
+              onClick={() => this.move('R')}
+              buttonText={Strings.buttons.turnRight}
             />
           <input
             id="autoRunInput"
             ref={this.autoRunInput}
             type="text"
-            // onKeyPress={(e) => /[FRL]/i.test(e.key)}
-            placeholder="Ex: FLRLFLLFFRR"
+            placeholder={Strings.labels.autoRunInputPlacerholder}
             onChange={e => {
-              this.setState({ autoRunValue: e.target.value })
+              this.setState({
+                autoRunValue: e.target.value,
+                inputError: false,
+              })
             }}
-            value={this.state.autoRunValue} />
+            value={this.state.autoRunValue}
+          />
           <Button
-                classes="control"
-                id='input'
-                onClick={() => this.autoRun(this.state.autoRunValue)}
-                buttonText="Go"
-            />
+            classes="control"
+            id='input'
+            onClick={() => this.autoRun(this.state.autoRunValue)}
+            buttonText={Strings.buttons.autoRun}
+          />
+          <div className="error-message">
+            {this.state.inputError ? 'There is an error. Check input' : ''}
+          </div>
         </div>
-          <br className="none" />
-          <div id="output">
-            <div>Current direction: <span id="currDir" />{this.state.currentDirection}</div>
-            <div>Current position: <span>x:{this.hori} , y:{this.vert}</span>
+          <div className="output">
+            <div>{Strings.labels.currentDirection} <span id="currDir" />{this.state.currentDirection}</div>
+            <div>{Strings.labels.currentPosition} <span>x:{this.hori} , y:{this.vert}</span>
             </div>
           </div>
-          <br className="none" />
           <div id="playground">
             <div id='robot'/>
           </div>

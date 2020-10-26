@@ -2,53 +2,32 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 /**
- * Class rendering Button component
- * @param {Object}  props
- * @param {string}  props.classes
- * @param {string}  props.id
- * @param {func}    props.onClick
- * @param {string}  props.spanClass
- * @param {string}  props.scrollButtons
+ * Renders button
+ * @param {Object} props
+ * @param {string} props.id
+ * @param {string} props.classes
+ * @param {string} props.buttonText
+ * @param {func}   props.onClick
  * @class
  */
-export default class ButtonActions extends Component {
+export default class ButtonAction extends Component {
   render() {
     return (
-      <div className={this.props.classes}>
-        <button
-          id={this.props.id}
-          className={this.props.scrollButtons}
-          onClick={this.props.onClick}
-          type="button"
-        >
-          {this.props.buttonText}
-        </button>
-      </div>
+      <button
+        id={this.props.id}
+        className={this.props.classes}
+        onClick={this.props.onClick}
+        type="button"
+      >
+        {this.props.buttonText}
+      </button>
     );
   }
 }
 
-Button.propTypes = {
-  classes: PropTypes.string.isRequired,
+ButtonAction.propTypes = {
   id: PropTypes.string.isRequired,
+  classes: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   buttonText: PropTypes.string.isRequired,
 };
-
-
-function Button({
-  classes, id, onClick, scrollButtons, buttonText
-}) {
-  return (
-    <div className={classes}>
-      <button
-        id={id}
-        className={scrollButtons}
-        onClick={onClick}
-        type="button"
-      >
-        {buttonText}
-      </button>
-    </div>
-  );
-}
